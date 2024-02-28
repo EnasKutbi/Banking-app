@@ -1,6 +1,0 @@
-class branch {
-  name;
-    customers;
-    
-    
-}
