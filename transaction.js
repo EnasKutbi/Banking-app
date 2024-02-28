@@ -1,0 +1,4 @@
+class transaction {
+    amount;
+    date;
+}

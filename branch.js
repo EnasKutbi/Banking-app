@@ -1,0 +1,6 @@
+class branch {
+  name;
+    customers;
+    
+    
+}
