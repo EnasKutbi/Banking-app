@@ -1,9 +1,7 @@
-class Bank{
-  name;
-  branches;
-
+class Bank {
   constructor(name) {
     this.name = name;
+    this.branchs = [];
   }
   addBranch(branch) {
     this.branches.push(branch);
@@ -17,11 +15,9 @@ class Bank{
 }
 
 class Branch {
-  name;
-  customers;
-
   constructor(name) {
     this.name = name;
+    this.customers = [];
   }
 
   getName() {
@@ -32,16 +28,25 @@ class Branch {
   }
 
   addCustomer(customer) {
-    this.customers.push(customer);
+    if (!this.customers.includes(customer)) {
+      const result = this.customers.push(customer);
+      return result > 0 ? true : false;
+    }
   }
-  addCustomerTransaction(customerId, amount) {}
+  addCustomerTransaction(customerId, amount) {
+    const customer = this.customers.find(
+      (customer) => customer.id === customerId
+    );
+    if (customer) {
+      customer.addTransactions(amount);
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 class Customer {
-  name;
-  id;
-  transactions;
-
   constructor(name, id) {
     this.name = name;
     this.id = id;
@@ -56,21 +61,26 @@ class Customer {
   getTransactions() {
     return this.transactions;
   }
-  getBalance() {}
+  getBalance() {
+    return this.transactions.reduce(
+      (total, transaction) => total + transaction.amount,
+      0
+    );
+  }
   addTransactions(amount) {
-    this.transactions.push(amount);
+    const transaction = new Transaction(amount);
+    const result = this.transactions.push(transaction);
+    return result > 0 ? true : false;
   }
 }
 
 class Transaction {
-  amount;
-  date;
-
   constructor(amount) {
     this.amount = amount;
     this.date = new Date();
   }
 }
+
 const arizonaBank = new Bank("Arizona");
 const westBranch = new Branch("West Branch");
 const sunBranch = new Branch("Sun Branch");
