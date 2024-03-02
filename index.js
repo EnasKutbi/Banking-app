@@ -26,25 +26,31 @@ class Bank {
       return false;
     }
   }
-  
+
   findBranchByName(branchName) {
     return this.branchs.find((branch) => branch.name === branchName);
   }
-  
+
   checkBranch(branch) {
     return this.branchs.includes(branch);
   }
-  
+
   listCustomers(branch, includeTransactions) {
     const targetBranch = this.findBranchByName(branch.name);
     if (targetBranch) {
       const customers = targetBranch.getCustomers();
-      customers.forEach(customer => {
-        console.log(`Customer Name: ${customer.getName()} \nCustmer ID: ${customer.getId()}`);
+      customers.forEach((customer) => {
+        console.log(
+          `Customer Name: ${customer.getName()} \nCustmer ID: ${customer.getId()}`
+        );
         if (includeTransactions) {
           const transactions = customer.getTransactions();
-          transactions.forEach(transaction => {
-            console.log(`Amount: ${transaction.amount} \nDate: ${transaction.date} \n \n`)
+          transactions.forEach((transaction) => {
+            console.log(
+              `Amount: ${
+                transaction.amount
+              } \nDate: ${transaction.date.toDateString()} \n \n`
+            );
           });
         }
       });
