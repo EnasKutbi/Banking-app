@@ -6,14 +6,16 @@ class Bank {
   addBranch(branch) {
     if (!this.branchs.includes(branch)) {
       const result = this.branchs.push(branch);
-      return result > 0 ? true : false;
+      return result > 0 ? `${branch.name} has been added` : "Branch not exist";
     }
   }
 
   addCustomer(branch, customer) {
     if (this.branchs.includes(branch)) {
       const result = branch.addCustomer(customer);
-      return result > 0 ? true : false;
+      return result > 0
+        ? `${customer.name} has been added to ${branch.name}`
+        : "the customer not exist in the branch";
     }
   }
 
@@ -41,23 +43,37 @@ class Bank {
       const customers = targetBranch.getCustomers();
       customers.forEach((customer) => {
         console.log(
-          `Customer Name: ${customer.getName()} \nCustmer ID: ${customer.getId()}`
+          `---------------------------------------
+          \nCustomer information:\nName: ${customer.getName()} \t ID: ${customer.getId()}`
         );
         if (includeTransactions) {
           const transactions = customer.getTransactions();
           transactions.forEach((transaction) => {
-            console.log(
-              `Amount: ${
+            console.log(`transaction:\nAmount: ${
                 transaction.amount
-              } \nDate: ${transaction.date.toDateString()} \n \n`
-            );
+              } \tDate: ${transaction.date.toDateString()} `);
           });
         }
       });
     }
   }
-}
 
+  searchCustomer(customerName) {
+    this.branchs.forEach((branch) => {
+      const customers = branch.getCustomers();
+      customers.forEach((customer) => {
+        if (
+          customer.getName().toLowerCase().includes(customerName.toLowerCase())
+        ) {
+          console.log(
+            `-------------------------------------
+            \nCustomer Name: ${customer.getName()} \nCustmer ID: ${customer.getId()}`
+          );
+        }
+      });
+    });
+  }
+}
 class Branch {
   constructor(name) {
     this.name = name;
@@ -74,7 +90,7 @@ class Branch {
   addCustomer(customer) {
     if (!this.customers.includes(customer)) {
       const result = this.customers.push(customer);
-      return result > 0 ? true : false;
+      return result > 0 ? `success` : `fail`;
     }
   }
   addCustomerTransaction(customerId, amount) {
@@ -89,7 +105,6 @@ class Branch {
     }
   }
 }
-
 class Customer {
   constructor(name, id) {
     this.name = name;
@@ -152,3 +167,64 @@ customer1.addTransactions(-1000);
 console.log(customer1.getBalance());
 console.log(arizonaBank.listCustomers(westBranch, true));
 console.log(arizonaBank.listCustomers(sunBranch, true));
+
+
+/*My validation checks*/
+console.log("\nMy validation checks:");
+
+const bankAlahli = new Bank("Alahli");
+
+const makkahBranch = new Branch("Makkah Branch");
+const jeddahBranch = new Branch("Jeddah Branch");
+
+const myCustmer1 = new Customer("Amira", 4);
+const myCustmer2 = new Customer("Rana", 5);
+const myCustmer3 = new Customer("Ali", 6);
+//1 addBranch
+console.log("\naddBranch check: ");
+console.log(bankAlahli.addBranch(makkahBranch));
+console.log(bankAlahli.addBranch(jeddahBranch));
+
+//2 addCustomer
+console.log("\naddCustomer check: ");
+console.log(bankAlahli.addCustomer(makkahBranch, myCustmer1));
+console.log(bankAlahli.addCustomer(makkahBranch, myCustmer2));
+console.log(bankAlahli.addCustomer(jeddahBranch, myCustmer3));
+
+//3 addCustomerTransaction
+console.log("\naddCustomerTransaction check: ");
+console.log(bankAlahli.addCustomerTransaction(makkahBranch, myCustmer1.getId, 500));
+console.log(bankAlahli.addCustomerTransaction(makkahBranch, myCustmer2.getId, 3000));
+console.log(bankAlahli.addCustomerTransaction(jeddahBranch, myCustmer3.getId, 1000));
+
+//4 findBranchByName
+console.log("\nfindBranchByName check: ");
+console.log(bankAlahli.findBranchByName("Makkah Branch"));
+console.log(bankAlahli.findBranchByName("Jeddah"));
+
+//5 checkBranch
+console.log("\ncheckBranch check: ");
+console.log(bankAlahli.checkBranch(makkahBranch));
+console.log(bankAlahli.checkBranch(jeddahBranch));
+
+//6 addCustomer to Branch
+console.log("\naddCustomer to branch check: ");
+console.log(makkahBranch.addCustomer(myCustmer3));
+
+//7 addCustomerTransaction
+console.log("\naddCustomerTransaction check: ");
+console.log(makkahBranch.addCustomerTransaction(5, 400));
+
+//8 addTransactions
+console.log("\naddTransactions to customer check: ");
+console.log(myCustmer2.addTransactions(5000));
+
+//9 listCustomers
+console.log("\nlistCustomers check: ");
+console.log(bankAlahli.listCustomers(makkahBranch, true));
+console.log(bankAlahli.listCustomers(jeddahBranch, true));
+
+//10 search
+console.log("\nsearch check: ");
+console.log(bankAlahli.searchCustomer("Ran"));
+console.log(bankAlahli.searchCustomer("amira"));
