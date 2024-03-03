@@ -19,7 +19,7 @@ export default class Branch {
       const result = this.customers.push(customer);
       return result > 0 ? `success` : `fail`;
     } else {
-        return false;
+      return false;
     }
   }
   addCustomerTransaction(customerId: number, amount: number) {
