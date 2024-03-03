@@ -1,132 +1,14 @@
 "use strict";
-class Bank {
-    constructor(name) {
-        this.name = name;
-        this.branches = [];
-    }
-    addBranch(branch) {
-        if (!this.branches.includes(branch)) {
-            const result = this.branches.push(branch);
-            return result > 0 ? `${branch.name} has been added` : "Branch not exist";
-        }
-    }
-    addCustomer(branch, customer) {
-        if (this.branches.includes(branch)) {
-            const result = branch.addCustomer(customer);
-            if (result) {
-                return true;
-            }
-        }
-        return false;
-    }
-    addCustomerTransaction(branch, customerId, amount) {
-        const targetBranch = this.findBranchByName(branch.name);
-        if (targetBranch) {
-            targetBranch.addCustomerTransaction(customerId, amount);
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    findBranchByName(branchName) {
-        return this.branches.find((branch) => branch.name === branchName);
-    }
-    checkBranch(branch) {
-        return this.branches.includes(branch);
-    }
-    listCustomers(branch, includeTransactions) {
-        const targetBranch = this.findBranchByName(branch.name);
-        if (targetBranch) {
-            const customers = targetBranch.getCustomers();
-            customers.forEach((customer) => {
-                console.log(`---------------------------------------
-          \nCustomer information:\nName: ${customer.getName()} \t ID: ${customer.getId()}`);
-                if (includeTransactions) {
-                    const transactions = customer.getTransactions();
-                    transactions.forEach((transaction) => {
-                        console.log(`transaction:\nAmount: ${transaction.amount} \tDate: ${transaction.date.toDateString()} `);
-                    });
-                }
-            });
-        }
-    }
-    searchCustomer(customerName) {
-        this.branches.forEach((branch) => {
-            const customers = branch.getCustomers();
-            customers.forEach((customer) => {
-                if (customer.getName().toLowerCase().includes(customerName.toLowerCase())) {
-                    console.log(`-------------------------------------
-            \nCustomer Name: ${customer.getName()} \nCustmer ID: ${customer.getId()}`);
-                }
-            });
-        });
-    }
-}
-class Branch {
-    constructor(name) {
-        this.name = name;
-        this.customers = [];
-    }
-    getName() {
-        return this.name;
-    }
-    getCustomers() {
-        return this.customers;
-    }
-    addCustomer(customer) {
-        if (!this.customers.includes(customer)) {
-            const result = this.customers.push(customer);
-            return result > 0 ? `success` : `fail`;
-        }
-    }
-    addCustomerTransaction(customerId, amount) {
-        const customer = this.customers.find((customer) => customer.id === customerId);
-        if (customer) {
-            customer.addTransactions(amount);
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-}
-class Customer {
-    constructor(name, id) {
-        this.name = name;
-        this.id = id;
-        this.transactions = [];
-    }
-    getName() {
-        return this.name;
-    }
-    getId() {
-        return this.id;
-    }
-    getTransactions() {
-        return this.transactions;
-    }
-    getBalance() {
-        return this.transactions.reduce((total, transaction) => total + transaction.amount, 0);
-    }
-    addTransactions(amount) {
-        const transaction = new Transaction(amount);
-        const result = this.transactions.push(transaction);
-        return result > 0 ? true : false;
-    }
-}
-class Transaction {
-    constructor(amount) {
-        this.amount = amount;
-        this.date = new Date();
-    }
-}
-const arizonaBank = new Bank("Arizona");
-const westBranch = new Branch("West Branch");
-const sunBranch = new Branch("Sun Branch");
-const customer1 = new Customer("John", 1);
-const customer2 = new Customer("Anna", 2);
-const customer3 = new Customer("John", 3);
+Object.defineProperty(exports, "__esModule", { value: true });
+const bank_1 = require("./bank");
+const branch_1 = require("./branch");
+const customer_1 = require("./customer");
+const arizonaBank = new bank_1.default("Arizona");
+const westBranch = new branch_1.default("West Branch");
+const sunBranch = new branch_1.default("Sun Branch");
+const customer1 = new customer_1.default("John", 1);
+const customer2 = new customer_1.default("Anna", 2);
+const customer3 = new customer_1.default("John", 3);
 arizonaBank.addBranch(westBranch);
 arizonaBank.addBranch(sunBranch);
 arizonaBank.addBranch(westBranch);
@@ -145,12 +27,12 @@ console.log(arizonaBank.listCustomers(westBranch, true));
 console.log(arizonaBank.listCustomers(sunBranch, true));
 /*My validation checks*/
 console.log("\nMy validation checks:");
-const bankAlahli = new Bank("Alahli");
-const makkahBranch = new Branch("Makkah Branch");
-const jeddahBranch = new Branch("Jeddah Branch");
-const myCustmer1 = new Customer("Amira", 4);
-const myCustmer2 = new Customer("Rana", 5);
-const myCustmer3 = new Customer("Ali", 6);
+const bankAlahli = new bank_1.default("Alahli");
+const makkahBranch = new branch_1.default("Makkah Branch");
+const jeddahBranch = new branch_1.default("Jeddah Branch");
+const myCustmer1 = new customer_1.default("Amira", 4);
+const myCustmer2 = new customer_1.default("Rana", 5);
+const myCustmer3 = new customer_1.default("Ali", 6);
 //1 addBranch
 console.log("\naddBranch check: ");
 console.log(bankAlahli.addBranch(makkahBranch));
