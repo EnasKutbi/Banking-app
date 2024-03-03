@@ -11,6 +11,8 @@ export default class Bank {
     if (!this.branches.includes(branch)) {
       const result = this.branches.push(branch);
       return result > 0 ? `${branch.name} has been added` : "Branch not exist";
+    } else {
+        return false;
     }
   }
 

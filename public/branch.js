@@ -16,6 +16,9 @@ class Branch {
             const result = this.customers.push(customer);
             return result > 0 ? `success` : `fail`;
         }
+        else {
+            return false;
+        }
     }
     addCustomerTransaction(customerId, amount) {
         const customer = this.customers.find((customer) => customer.id === customerId);

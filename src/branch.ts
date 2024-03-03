@@ -18,6 +18,8 @@ export default class Branch {
     if (!this.customers.includes(customer)) {
       const result = this.customers.push(customer);
       return result > 0 ? `success` : `fail`;
+    } else {
+        return false;
     }
   }
   addCustomerTransaction(customerId: number, amount: number) {
